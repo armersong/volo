@@ -30,6 +30,8 @@ impl Connector for NativeTlsConnector {
                 .map_err(|e| io::Error::new(io::ErrorKind::InvalidInput, e))?;
             builder.add_root_certificate(cert);
         }
+        builder.danger_accept_invalid_certs(config.accept_invalid_certs);
+        builder.danger_accept_invalid_hostnames(config.accept_invalid_hostnames);
         let connector = builder
             .build()
             .map_err(|e| io::Error::new(io::ErrorKind::InvalidInput, e))?;

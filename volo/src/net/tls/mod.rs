@@ -155,6 +155,8 @@ impl fmt::Debug for TlsAcceptor {
 
 pub struct TlsConnectorBuilder {
     pub(super) default_root_certs: bool,
+    pub(super) accept_invalid_hostnames: bool,
+    pub(super) accept_invalid_certs: bool,
     pub(super) pems: Vec<Vec<u8>>,
 }
 
@@ -162,6 +164,8 @@ impl Default for TlsConnectorBuilder {
     fn default() -> Self {
         Self {
             default_root_certs: true,
+            accept_invalid_hostnames: false,
+            accept_invalid_certs: false,
             pems: Vec::new(),
         }
     }
@@ -172,7 +176,14 @@ impl TlsConnectorBuilder {
         self.default_root_certs = enable;
         self
     }
-
+    pub fn enable_accept_invalid_hostnames(mut self, enable: bool) -> Self {
+        self.accept_invalid_hostnames = enable;
+        self
+    }
+    pub fn enable_accept_invalid_certs(mut self, enable: bool) -> Self {
+        self.accept_invalid_certs = enable;
+        self
+    }    
     pub fn add_pem(mut self, cert: Vec<u8>) -> Self {
         self.pems.push(cert);
         self
